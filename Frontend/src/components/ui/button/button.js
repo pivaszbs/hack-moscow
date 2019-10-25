@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import './button.sass';
 
 const Button = ({ className, type, children }) => {
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import './text.sass';
+import './typo.sass';
 
 const defaultVariantMapping = {
     h1: 'h1',
