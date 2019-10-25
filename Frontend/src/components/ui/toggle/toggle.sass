@@ -1,0 +1,39 @@
+@import ../../../styles/globals
+
+$width: 40px
+$height: 20px
+
+.switch-wrap
+  cursor: pointer
+  input
+    position: absolute
+    opacity: 0
+    width: 0
+    height: 0
+
+.switch
+  width: $width
+  height: $height
+  display: inline-grid
+  grid-template-columns: 0 1fr 1fr
+  transition: .5s
+  align-items: center
+  border-radius: 10px
+  border: 1px solid $main-light
+
+  &::after
+    content: ''
+    width: 12px
+    height: 12px
+    border-radius: 50%
+    margin: 4px
+    background: $main-light
+    grid-column: 2
+    transition: backround .5s ease
+
+input:checked
+  + .switch
+    border: 1px solid $primary
+    grid-template-columns: 1fr 1fr 0
+    &::after
+      background: $gradient-primary
