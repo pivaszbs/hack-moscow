@@ -1,6 +1,5 @@
 djangorestframework
 django
-<<<<<<< HEAD
 django-rest-framework
 scipy
 django-cors-headers
