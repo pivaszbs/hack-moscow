@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from geojourney.serializers.journey import CreateJourneySerializer
+
 
 class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = None  # WIP
@@ -32,7 +34,13 @@ class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Gener
             link
         ]
         """
-        return Response()
+        # user = request.user  # скорее всего тут упадет без аутентификации
+        serializer = CreateJourneySerializer(data=request.data)
+        # serializer.is_valid()
+        result = serializer.save()
+        # надо выводить готовый вариант путешествия
+
+        return Response(result)
 
     def create(self, request, *args, **kwargs):
         """По сути просто записывает новое путешествие в базу"""  # TODO: придумать в каком виде, написать сериализатор

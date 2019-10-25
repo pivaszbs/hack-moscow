@@ -119,3 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+APP_ID = "P0qk3pi3vio7URSRX1UO"
+APP_CODE = "3fLws3lWLusLE0yeFpcLOA"
