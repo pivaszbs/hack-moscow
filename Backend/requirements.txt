@@ -2,3 +2,4 @@ djangorestframework
 django
 scipy
 requests
+django-cors-headers
