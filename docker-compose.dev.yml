@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  frontend:
+    ports:
+    - 80:80
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./Frontend/
+
+  backend:
+    depends_on:
+    - postgresql
+    ports:
+    - 8000:8000
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./Backend/
+
+  postgresql:
+    image: postgres:latest
+    ports:
+    - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    restart: always
+    volumes:
+    - ./db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
