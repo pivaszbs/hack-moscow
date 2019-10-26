@@ -27,7 +27,3 @@ urlpatterns = [
 
     path('geojourney/', include('geojourney.urls')),
 ]
-
-
-
-urlpatterns += router.urls
