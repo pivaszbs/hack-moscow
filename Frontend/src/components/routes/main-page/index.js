@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import Header from '../../header';
-import { Select, Avatar, Typo, Filter, Card, TextField, Button } from '../../ui';
+import {
+	Select,
+	Avatar,
+	Typo,
+	Filter,
+	Card,
+	TextField,
+	Button,
+} from '../../ui';
 import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
 import Footer from '../../footer';
 import Recomendation from '../../recomendation';
+import Fade from 'react-reveal/Fade';
+import Roll from 'react-reveal/Roll';
 
 const options = [
 	{ value: 'chocolate', label: 'Chocolate' },
@@ -38,7 +48,7 @@ const MainPage = () => {
 	return (
 		<div className="main-page">
 			<Header />
-			<div className="controls">
+			<div className="main-content">
 				<Select className={'city-pick'} options={options} />
 				<Card className="user-card" width={300} height={150}>
 					<div className="user-card__name">
@@ -51,35 +61,40 @@ const MainPage = () => {
 					</div>
 					<Avatar className="user-card__avatar" avatar={Ava} />
 				</Card>
-			</div>
-			<div className="main-content">
-				<div className="main-content__map">Карта</div>
-				<Card className="main-content__filter" width={250} height={250}>
-					<Filter options={filterOptions} />
-				</Card>
-				<Recomendation
-					className="main-content__recomendation"
-					rate={rate}
-					changeRate={v => setRate(v)}
-				/>
-				<div className='user-controls'>
-					<TextField
-						value={time}
-						onChange={e => changeTime(e.target.value)}
-						placeholder="hh.mm"
-						className="time"
+				<Roll top left>
+					<div className="main-content__map">Карта</div>
+
+					<Card className="main-content__filter" width={250} height={250}>
+						<Filter options={filterOptions} />
+					</Card>
+				</Roll>
+				<Fade right>
+					<Recomendation
+						className="main-content__recomendation"
+						rate={rate}
+						changeRate={v => setRate(v)}
 					/>
-					<TextField
-						type='number'
-						value={range}
-						onChange={e => setRange(e.target.value)}
-						placeholder='KM'
-						className='range'
-					/>
-				</div>
-				<Button className='main-button' variant='primary'>
-					НАЙТИ
-				</Button>
+				</Fade>
+				<Fade left>
+					<div className="user-controls">
+						<TextField
+							value={time}
+							onChange={e => changeTime(e.target.value)}
+							placeholder="hh.mm"
+							className="time"
+						/>
+						<TextField
+							type="number"
+							value={range}
+							onChange={e => setRange(e.target.value)}
+							placeholder="KM"
+							className="range"
+						/>
+					</div>
+					<Button className="main-button" variant="primary">
+						НАЙТИ
+					</Button>
+				</Fade>
 			</div>
 
 			<Footer />
