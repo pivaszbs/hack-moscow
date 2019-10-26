@@ -5,6 +5,7 @@ import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
 import Footer from '../../footer';
 import Recomendation from '../../recomendation';
+import Audioguide from "../../ui/audioguide";
 
 const options = [
 	{ value: 'chocolate', label: 'Chocolate' },
@@ -49,6 +50,11 @@ const MainPage = () => {
 					className="main-content__recomendation"
 					rate={rate}
 					changeRate={v => setRate(v)}
+				/>
+				<Audioguide
+					className="main-content__audioguide"
+					isPlaying={false}
+					maxTime={200}
 				/>
 			</div>
 			<Footer />
