@@ -74,27 +74,37 @@ class JourneyGenerator:
         coordinates = [[point.x, point.y] for point in points]
         if self.triangulation is None:
             vertices, edges, faces, enclosing_points = tri.compute_triangulation(points)
-            self.triangulation = {'vertices': vertices,
-                                  'edges': edges,
-                                  'faces': faces,
-                                  'enclosing_points': enclosing_points}
-            for index, vertex in enumerate(self.triangulation['vertices']):
+            or index, vertex in enumerate(vertices):
                 vertex.weight = points[index].weight
 
-            for index, edge in enumerate(self.triangulation['edges']):
-                response = requests.get('https://route.api.here.com/routing/7.2/calculateroute.json'
-                                        '?app_id={}&app_code={}'
-                                        '&waypoint0=geo!{},{}'
-                                        '&waypoint1=geo!{},{}'
-                                        '&mode=fastest;pedestrian;traffic:disabled'
-                                        .format(settings.APP_ID, settings.APP_CODE,
-                                                edge.origin.x, edge.origin.y,
-                                                edge.next.origin.x, edge.next.origin.y))
+            edges_set = get_edges_list(edges)
+            query = '&'.join(['start{}={},{}&destination{}:{},{}'.format(ind, edg[0].origin.x, edg[0].origin.y,
+                ind, edg[1].origin.x, edg[1].origin.y) for ind, edg in enumerate(edges_set)]
+            response = requests.get('https://matrix.route.api.here.com/routing/7.2/calculatematrix.json'
+                                                               '?app_id={}&app_code={}&{}'
+                                                               '&mode=fastest;pedestrian;traffic:disabled
+                                                               '&summaryAttributes=costfactor,distance'
+                                                               .format(settings.APP_ID, settings.APP_CODE, query))
+            get_routes = response.json()
+            relevant_routes = filter(lambda route: route['summary']['startIndex'] == route['summary']['destinationIndex'], get_routes['matrixEntry'])
+            for route in relevant_routes:
+                summary = route['summary']
+                ind, distance, costFactor = summary['startIndex'], summary['distance'], summary['costFactor']
+                edges[ind].distance = distance / 1000  # route[0]
+                edges[ind].duration = costFactor / 60
+            self.triangulation = {'vertices': vertices,
+                                              'edges': edges,
+                                              'faces': faces,
+                                              'enclosing_points': enclosing_points}
+            print(self.triangulation)
 
-                get_route = response.json()
-                # TODO check api structure. May cause errors
-                edge.distance = get_route['route']['summary']['distance'] / 1000  # route[0]
-                edge.duration = get_route['route']['summary']['base_time'] / 60
+
+    def get_edges_list(edges):
+        pairs = set()
+        for edge in edges:
+            pairs.add((edge, edge.next))
+            pairs.add((edge.previous, edge))
+        return list(all_pairs)
 
     def get_bound_triangle(self, point):
         bound_face = self.triangulation['faces'][0]
