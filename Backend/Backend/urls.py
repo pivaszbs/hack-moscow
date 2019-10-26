@@ -30,3 +30,4 @@ router = SimpleRouter()
 
 router.register("journey", JourneyViewSet, basename="journey")
 
+urlpatterns += router.urls
