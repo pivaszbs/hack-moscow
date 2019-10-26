@@ -43,7 +43,6 @@ class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Gener
         serializer = CreateJourneySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
-        data = serializer.data
         # надо выводить готовый вариант путешествия
 
         return Response(result)
