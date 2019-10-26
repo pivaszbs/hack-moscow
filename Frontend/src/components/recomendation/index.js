@@ -5,8 +5,6 @@ import { Card } from '../ui';
 import './recomendation.sass';
 
 const Recomendation = ({ img, rate, changeRate, id, audio, className }) => {
-	console.log('kek');
-
 	return (
 		<div className={clsx('recomendation', className)}>
 			<Card>

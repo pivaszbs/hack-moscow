@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Header from '../../header';
-import { Select, Avatar, Typo, Filter, Card } from '../../ui';
+import { Select, Avatar, Typo, Filter, Card, TextField, Button } from '../../ui';
 import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
 import Footer from '../../footer';
@@ -21,12 +21,25 @@ const filterOptions = [
 
 const MainPage = () => {
 	const [rate, setRate] = useState(3);
+	const [time, setTime] = useState('');
+	const [range, setRange] = useState('');
+
+	const changeTime = time => {
+		time = time.replace(/[\D]/, '');
+
+		if (time.length > 2) {
+			time = time.slice(0, 2) + '.' + time.slice(2);
+		}
+
+		time = time.slice(0, 5);
+		setTime(time);
+	};
 
 	return (
 		<div className="main-page">
 			<Header />
 			<div className="controls">
-				<Select className={'city-pick'} options={options} />
+				<Select className={'city-pick'} options={options} isMulti />
 				<Card className="user-card" width={300} height={150}>
 					<div className="user-card__name">
 						<Typo variant="h1">Name</Typo>
@@ -50,7 +63,26 @@ const MainPage = () => {
 					rate={rate}
 					changeRate={v => setRate(v)}
 				/>
+				<div className='user-controls'>
+					<TextField
+						value={time}
+						onChange={e => changeTime(e.target.value)}
+						placeholder="hh.mm"
+						className="time"
+					/>
+					<TextField
+						type='number'
+						value={range}
+						onChange={e => setRange(e.target.value)}
+						placeholder='KM'
+						className='range'
+					/>
+				</div>
+				<Button className='main-button' variant='primary'>
+					НАЙТИ
+				</Button>
 			</div>
+
 			<Footer />
 		</div>
 	);
