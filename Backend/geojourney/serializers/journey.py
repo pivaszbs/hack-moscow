@@ -2,6 +2,8 @@ import requests
 from rest_framework import serializers
 from django.conf import settings
 
+from geojourney.models import Journey, Spot
+
 
 class CreateJourneySerializer(serializers.Serializer):
     # userId, city, startPoint, endPoint, duration (mins), distance, filters
@@ -26,3 +28,17 @@ class CreateJourneySerializer(serializers.Serializer):
         # потом вызвать метод Ильи
 
         pass
+
+
+class SpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spot
+        fields = '__all__'
+
+
+class JourneySerializer(serializers.ModelSerializer):
+    spots = SpotSerializer(many=True)
+
+    class Meta:
+        model = Journey
+        fields = '__all__'
