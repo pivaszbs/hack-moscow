@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "1.2.0",
-    "@material-ui/icons": "1.1.0",
+    "@material-ui/core": "^4.5.1",
+    "@material-ui/icons": "^4.5.1",
     "clsx": "^1.0.4",
-    "node-sass": "^4.13.0",
+    "material-ui-rating": "^4.2.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-google-login": "^5.0.7",
@@ -15,14 +15,17 @@
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
+    "react-select": "^3.0.8",
     "react-slider": "^1.0.1",
     "redux": "^4.0.4"
   },
   "scripts": {
+    "lint": "eslint --debug src/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write src/**/*.js && prettier --write src/**/**/*.js && prettier --write src/**/**/**/*.js && prettier --write src/**/**/**/**/*.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,5 +41,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-prettier": "2.6.2",
+    "node-sass": "4.12.0",
+    "prettier": "1.18.2"
   }
 }

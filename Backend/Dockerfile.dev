@@ -1,0 +1,22 @@
+FROM python:latest
+
+WORKDIR /app
+
+RUN pip install --upgrade pip
+RUN apt-get update && apt-get install -y --no-install-recommends gettext && apt-get clean
+
+EXPOSE 8000
+
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+ADD . .
+
+ARG backend_databese_host=postgresql
+ENV DATA_BASE_HOST=$backend_databese_host
+ENV POSTGRES_USER=root
+ENV POSTGRES_PASSWORD=root
+ENV POSTGRES_DB=root
+
+CMD ["sh", "./boot.sh"]

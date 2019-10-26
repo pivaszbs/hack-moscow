@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import SimpleRouter
+
+from geojourney.views.auth import LoginAPIView, RegisterAPIView
+from geojourney.views.journey import JourneyViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/login', LoginAPIView.as_view()),
+    path('auth/register', RegisterAPIView.as_view()),
 ]
+
+router = SimpleRouter()
+
+router.register("journey", JourneyViewSet, basename="journey")
+

@@ -1,11 +1,8 @@
 import React from 'react';
 
 const {
-    Provider: GeolocServiceProvider,
-    Consumer: GeolocServiceConsumer
+	Provider: GeolocServiceProvider,
+	Consumer: GeolocServiceConsumer,
 } = React.createContext();
 
-export {
-    GeolocServiceProvider,
-    GeolocServiceConsumer
-};
+export { GeolocServiceProvider, GeolocServiceConsumer };

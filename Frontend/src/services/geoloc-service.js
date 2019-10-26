@@ -1,3 +1,1 @@
-export default class GeolocationService {
-
-}
+export default class GeolocationService {}
