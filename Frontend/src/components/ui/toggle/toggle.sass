@@ -1,4 +1,4 @@
-@import ../../../styles/globals
+@import ../../../assets/styles/globals
 
 $width: 40px
 $height: 20px
@@ -16,11 +16,12 @@ $height: 20px
   height: $height
   display: inline-grid
   grid-template-columns: 0 1fr 1fr
-  transition: .5s
   align-items: center
   border-radius: 10px
   border: 1px solid $main-light
-
+  &-text
+    margin-left: 8px
+    color: $main-light
   &::after
     content: ''
     width: 12px
@@ -29,11 +30,14 @@ $height: 20px
     margin: 4px
     background: $main-light
     grid-column: 2
-    transition: backround .5s ease
+    transition: .3s ease
 
 input:checked
+  ~ .switch-text
+    color: $dark
   + .switch
     border: 1px solid $primary
-    grid-template-columns: 1fr 1fr 0
+
     &::after
-      background: $gradient-primary
+      background: $primary
+      margin-left: $width - 15px

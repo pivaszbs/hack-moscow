@@ -7,8 +7,7 @@ const Routes = () => {
     return (
         <Router>
             <Switch>
-                <Route path={'/'} component={Login} restrictred={false} />
-                <Route path={'/login'} component={Login} />
+                <Route path={'/'} component={MainPage} restrictred={false} />
             </Switch>
         </Router>
     );

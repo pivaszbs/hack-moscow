@@ -6,6 +6,10 @@ import Toggle from "./toggle";
 import TextField from "./text-field";
 import Slider from "./slider";
 import Search from "./search";
+import Select from "./select";
+import Row from "./row";
+import Avatar from "./avatar/avatar";
+import Filter from "./filter";
 
 export {
     Button,
@@ -15,5 +19,9 @@ export {
     Toggle,
     TextField,
     Slider,
-    Search
+    Search,
+    Select,
+    Row,
+    Avatar,
+    Filter
 }

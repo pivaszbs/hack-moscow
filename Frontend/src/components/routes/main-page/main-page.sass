@@ -1,0 +1,67 @@
+@import ../../../assets/styles/globals
+
+.controls
+    position: relative
+    margin: -20px 10% 20px 80px
+    height: 170px
+
+    .city-pick
+        display: inline-block
+        vertical-align: top
+
+    .user-card
+        position: absolute
+        right: 0
+        display: inline-grid
+        grid-template-columns: 2fr 1fr
+        grid-template-rows: 1fr 1fr 1fr
+        align-items: center
+        &__name
+            grid-column: 1
+            grid-row: 1
+
+        &__avatar
+            background: $main
+            grid-row: 1
+            grid-column: 2
+            margin-left: 20px
+
+        &__info
+            margin-top: 20px
+            overflow: hidden
+            overflow-wrap: break-word
+
+            grid-row: 2 / 3
+            grid-column: 1 / 2
+
+.main-content
+    margin: 20px
+    display: grid
+    grid-template-columns: 6fr 1fr 4fr
+    grid-template-rows: 2fr 2fr
+    grid-gap: 5px
+    height: 40vh
+    align-items: center
+    justify-content: center
+    justify-items: center
+
+    &__map
+        font-size: 160px
+        font-weight: 700
+        grid-column: 1
+        grid-row: 1 / 4
+
+    &__category
+        grid-column: 2
+        grid-row: 1
+        font-size: 70px
+        overflow-wrap: break-word
+        overflow: hidden
+
+    &__filter
+        grid-column: 2
+        grid-row: 2
+
+    &__recomendation
+        grid-column: 3
+        grid-row: 1 / 2

@@ -1,4 +1,4 @@
-@import ../../../styles/globals
+@import ../../../assets/styles/globals
 
 .button
     border-radius: 10px
@@ -7,8 +7,10 @@
     height: 40px
     width: 220px
     cursor: pointer
-    background: $primary
     text-align: center
-    .button__text
+    &__text
         margin-inline-start: 1em
         margin-inline-end: 1em
+    &_primary
+        background: $primary
+        color: white

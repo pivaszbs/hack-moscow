@@ -8,6 +8,9 @@ import GeolocService from './services/geoloc-service';
 import { GeolocServiceProvider } from './components/geoloc-context';
 
 import store from './store';
+import './assets/styles/fonts.sass';
+import './assets/styles/global-styles.sass';
+
 
 const geolocService = new GeolocService();
 
