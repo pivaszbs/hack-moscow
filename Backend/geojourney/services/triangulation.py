@@ -19,9 +19,10 @@ class Edge:
 
 
 class Point:
-    def __init__(self, x, y, edge=None):
+    def __init__(self, x, y, href=None, edge=None):
         self.x = x
         self.y = y
+        self.href = href
         self.edge = edge
         self.weight = None
 
