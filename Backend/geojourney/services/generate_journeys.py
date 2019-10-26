@@ -83,13 +83,13 @@ class JourneyGenerator:
 
             for index, edge in enumerate(self.triangulation['edges']):
                 response = requests.get('https://route.api.here.com/routing/7.2/calculateroute.json'
-                                         '?app_id={}&app_code={}'
-                                         '&waypoint0=geo!{},{}'
-                                         '&waypoint1=geo!{},{}'
-                                         '&mode=fastest;car;traffic:disabled'
-                                         .format(settings.APP_ID, settings.APP_CODE,
-                                                 edge.origin.x, edge.origin.y,
-                                                 edge.next.x, edge.next.y))
+                                        '?app_id={}&app_code={}'
+                                        '&waypoint0=geo!{},{}'
+                                        '&waypoint1=geo!{},{}'
+                                        '&mode=fastest;car;traffic:disabled'
+                                        .format(settings.APP_ID, settings.APP_CODE,
+                                                edge.origin.x, edge.origin.y,
+                                                edge.next.x, edge.next.y))
 
                 get_route = response.json()
                 # TODO check api structure. May cause errors
