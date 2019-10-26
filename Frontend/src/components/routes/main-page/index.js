@@ -16,6 +16,7 @@ import Footer from '../../footer';
 import Recomendation from '../../recomendation';
 import Fade from 'react-reveal/Fade';
 import Roll from 'react-reveal/Roll';
+import Rotate from 'react-reveal/Rotate';
 import { updateTime, updateRange, fetchCategories } from '../../../store/actions';
 
 const options = [
@@ -48,9 +49,9 @@ const MainPage = ({ time, range, setTime, setRange, categories }) => {
 					</div>
 					<Avatar className="user-card__avatar" avatar={Ava} />
 				</Card>
+				<div className="earth"></div>
+				<div className='user-map'></div>
 				<Roll top left>
-					<div id="user-map"></div>
-
 					<Card className="main-content__filter" width={250} height={250}>
 						<Filter options={categories} />
 					</Card>
@@ -87,7 +88,7 @@ const MainPage = ({ time, range, setTime, setRange, categories }) => {
 			</div>
 
 			<Footer />
-		</div>
+		</div >
 	);
 };
 

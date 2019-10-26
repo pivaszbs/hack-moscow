@@ -6,8 +6,26 @@ import { bindActionCreators } from 'redux';
 const { updateStart: setStart, updateEnd: setEnd } = bindActionCreators({ updateStart, updateEnd }, store.dispatch)
 
 export default () => {
+
+    function interleave(map) {
+        var provider = map.getBaseLayer().getProvider();
+        var style = provider.getStyle();
+
+        var changeListener = () => {
+            if (style.getState() === H.map.Style.State.READY) {
+                setTimeout(() => {
+                    m.style.opacity = 1;
+                    const s = document.querySelector('.earth');
+                    s.remove()
+                }, 2000)
+
+            }
+        }
+
+        style.addEventListener('change', changeListener);
+    }
+
     const H = window.H;
-    window.addEventListener('resize', () => map.getViewPort().resize());
     const platform = new H.service.Platform({
         'apikey': 'gFekNQJXLJs2GqSJs1ukPhW5ua9Yy6LNHfUPMDcjLdo'
     });
@@ -15,7 +33,8 @@ export default () => {
     const center = { lat, lng }
     // Get the default map types from the Platform object:
     const defaultLayers = platform.createDefaultLayers();
-    const m = document.getElementById('user-map');
+    var m = document.querySelector('.user-map');
+    console.log(m);
     // Instantiate the map:
     const map = new H.Map(
         m,
@@ -24,7 +43,6 @@ export default () => {
             zoom: 10,
             center
         });
-
     // Create the default UI components
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
@@ -57,4 +75,5 @@ export default () => {
         }
     }, false);
 
+    interleave(map);
 }

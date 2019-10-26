@@ -25,4 +25,4 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
-map();
+setTimeout(map, 2000);
