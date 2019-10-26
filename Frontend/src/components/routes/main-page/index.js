@@ -62,7 +62,7 @@ const MainPage = () => {
 					<Avatar className="user-card__avatar" avatar={Ava} />
 				</Card>
 				<Roll top left>
-					<div className="main-content__map">Карта</div>
+					<div id="user-map"></div>
 
 					<Card className="main-content__filter" width={250} height={250}>
 						<Filter options={filterOptions} />
