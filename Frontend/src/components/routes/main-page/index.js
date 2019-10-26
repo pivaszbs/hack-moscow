@@ -14,6 +14,7 @@ import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
 import Footer from '../../footer';
 import Recomendation from '../../recomendation';
+import Audioguide from "../../ui/audioguide";
 import Fade from 'react-reveal/Fade';
 import Roll from 'react-reveal/Roll';
 import Rotate from 'react-reveal/Rotate';
@@ -86,7 +87,6 @@ const MainPage = ({ time, range, setTime, setRange, categories }) => {
 					</Button>
 				</Fade>
 			</div>
-
 			<Footer />
 		</div >
 	);
