@@ -3,13 +3,13 @@ import Toggle from '../toggle';
 import './filter.sass';
 import { Select } from '..';
 
-const select = [
+const defOptions = [
 	{ value: 'chocolate', label: 'Chocolate' },
 	{ value: 'strawberry', label: 'Strawberry' },
 	{ value: 'vanilla', label: 'Vanilla' },
 ];
 
-const Filter = ({ options = [] }) => {
+const Filter = ({ options = defOptions, select }) => {
 	return (
 		<div className="filter">
 			<Select options={select} className={'filter-select'} isMulti />

@@ -10,6 +10,7 @@ import { GeolocServiceProvider } from './components/geoloc-context';
 import store from './store';
 import './assets/styles/fonts.sass';
 import './assets/styles/global-styles.sass';
+import map from './map';
 
 const geolocService = new GeolocService();
 
@@ -23,3 +24,5 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById('root')
 );
+
+map();
