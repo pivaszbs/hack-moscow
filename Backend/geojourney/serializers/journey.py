@@ -1,4 +1,6 @@
+import requests
 from rest_framework import serializers
+from django.conf import settings
 
 
 class CreateJourneySerializer(serializers.Serializer):
@@ -15,5 +17,12 @@ class CreateJourneySerializer(serializers.Serializer):
 
     def create(self, validated_data):
         # нужно юзать апишку чтобы достать все точки в городе, соответствующие фильтрам (предпочтениям)
+        response = requests.get(f'https://places.cit.api.here.com/places/v1/discover/explore'
+                                f'?app_id={settings.APP_ID}'
+                                f'&app_code={settings.APP_CODE}'
+                                f'&at=52.50449,13.39091'  # чо
+                                f'&pretty')
+
         # потом вызвать метод Ильи
+
         pass
