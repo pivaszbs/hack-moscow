@@ -5,12 +5,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from django.conf import settings
-
+from geojourney.models import Journey
 from geojourney.serializers.journey import CreateJourneySerializer, JourneySerializer
 
 
 class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = JourneySerializer  # WIP
+
+    queryset = Journey.objects.all()
 
     # permission_classes = (IsAuthenticated,)
 
