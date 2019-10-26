@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../header';
 import { Select, Avatar, Typo, Filter, Card } from '../../ui';
 import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
 import Footer from '../../footer';
+import Recomendation from '../../recomendation';
 
 const options = [
 	{ value: 'chocolate', label: 'Chocolate' },
@@ -19,6 +20,8 @@ const filterOptions = [
 ];
 
 const MainPage = () => {
+	const [rate, setRate] = useState(3);
+
 	return (
 		<div className="main-page">
 			<Header />
@@ -42,7 +45,11 @@ const MainPage = () => {
 				<Card className="main-content__filter" width={150} height={150}>
 					<Filter options={filterOptions} />
 				</Card>
-				<div className="main-content__recomendation">RECOMENDATION</div>
+				<Recomendation
+					className="main-content__recomendation"
+					rate={rate}
+					changeRate={v => setRate(v)}
+				/>
 			</div>
 			<Footer />
 		</div>
