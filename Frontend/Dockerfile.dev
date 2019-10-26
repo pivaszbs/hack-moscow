@@ -1,0 +1,9 @@
+FROM node:latest
+
+EXPOSE 80
+
+WORKDIR /app
+
+ADD . .
+
+CMD ["sh", "./boot.sh"]
