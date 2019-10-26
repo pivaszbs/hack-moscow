@@ -1,5 +1,6 @@
 import React from 'react';
 import './footer.sass';
+import { connect } from 'react-redux'
 
 const Footer = () => {
 	return (

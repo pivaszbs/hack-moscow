@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux'
 import Header from '../../header';
 import {
 	Select,
@@ -16,6 +17,7 @@ import Recomendation from '../../recomendation';
 import Audioguide from "../../ui/audioguide";
 import Fade from 'react-reveal/Fade';
 import Roll from 'react-reveal/Roll';
+import { updateTime, updateRange, fetchCategories } from '../../../store/actions';
 
 const options = [
 	{ value: 'chocolate', label: 'Chocolate' },
@@ -23,28 +25,13 @@ const options = [
 	{ value: 'vanilla', label: 'Vanilla' },
 ];
 
-const filterOptions = [
-	{ label: 'dorowa', onChange: () => console.log('dorowa') },
-	{ label: 'dorowa', onChange: () => console.log('dorowa') },
-	{ label: 'dorowa', onChange: () => console.log('dorowa') },
-	{ label: 'dorowa', onChange: () => console.log('dorowa') },
-];
-
-const MainPage = () => {
+const MainPage = ({ time, range, setTime, setRange, categories }) => {
+	console.log(categories);
 	const [rate, setRate] = useState(3);
-	const [time, setTime] = useState('');
-	const [range, setRange] = useState('');
-
-	const changeTime = time => {
-		time = time.replace(/[\D]/, '');
-
-		if (time.length > 2) {
-			time = time.slice(0, 2) + ':' + time.slice(2);
-		}
-
-		time = time.slice(0, 5);
-		setTime(time);
-	};
+	useEffect(() => {
+		fetchCategories();
+		console.log('kek')
+	}, [])
 
 	return (
 		<div className="main-page">
@@ -66,7 +53,7 @@ const MainPage = () => {
 					<div id="user-map"></div>
 
 					<Card className="main-content__filter" width={250} height={250}>
-						<Filter options={filterOptions} />
+						<Filter options={categories} />
 					</Card>
 				</Roll>
 				<Fade right>
@@ -80,10 +67,10 @@ const MainPage = () => {
 					<div className="user-controls">
 						<TextField
 							value={time}
-							onChange={e => changeTime(e.target.value)}
+							onChange={e => setTime(e.target.value)}
 							placeholder="hh.mm"
 							className="time"
-							id='time'
+							id="time"
 						/>
 						<TextField
 							type="number"
@@ -91,7 +78,7 @@ const MainPage = () => {
 							onChange={e => setRange(e.target.value)}
 							placeholder="KM"
 							className="range"
-							id='range'
+							id="range"
 						/>
 					</div>
 					<Button className="main-button" variant="primary">
@@ -104,4 +91,12 @@ const MainPage = () => {
 	);
 };
 
-export default MainPage;
+const msttp = ({ time, range }) => ({ time, range })
+const mdtp = (dispatch) => ({
+	setTime: (time) => dispatch(updateTime(time)),
+	setRange: (range) => dispatch(updateRange(range)),
+	fetchCategories: fetchCategories(dispatch)
+})
+
+
+export default connect(msttp, mdtp)(MainPage);
