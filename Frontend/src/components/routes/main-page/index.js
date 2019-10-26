@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import Header from '../../header';
-import { Select, Avatar, Typo, Filter, Card } from '../../ui';
+import {
+	Select,
+	Avatar,
+	Typo,
+	Filter,
+	Card,
+	TextField,
+	Button,
+} from '../../ui';
 import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
 import Footer from '../../footer';
 import Recomendation from '../../recomendation';
 import Audioguide from "../../ui/audioguide";
+import Fade from 'react-reveal/Fade';
+import Roll from 'react-reveal/Roll';
 
 const options = [
 	{ value: 'chocolate', label: 'Chocolate' },
@@ -22,11 +32,24 @@ const filterOptions = [
 
 const MainPage = () => {
 	const [rate, setRate] = useState(3);
+	const [time, setTime] = useState('');
+	const [range, setRange] = useState('');
+
+	const changeTime = time => {
+		time = time.replace(/[\D]/, '');
+
+		if (time.length > 2) {
+			time = time.slice(0, 2) + ':' + time.slice(2);
+		}
+
+		time = time.slice(0, 5);
+		setTime(time);
+	};
 
 	return (
 		<div className="main-page">
 			<Header />
-			<div className="controls">
+			<div className="main-content">
 				<Select className={'city-pick'} options={options} />
 				<Card className="user-card" width={300} height={150}>
 					<div className="user-card__name">
@@ -39,23 +62,42 @@ const MainPage = () => {
 					</div>
 					<Avatar className="user-card__avatar" avatar={Ava} />
 				</Card>
-			</div>
-			<div className="main-content">
-				<div className="main-content__map">Карта</div>
-				<Card className="main-content__category">CAT</Card>
-				<Card className="main-content__filter" width={150} height={150}>
-					<Filter options={filterOptions} />
-				</Card>
-				<Recomendation
-					className="main-content__recomendation"
-					rate={rate}
-					changeRate={v => setRate(v)}
-				/>
-				<Audioguide
-					className="main-content__audioguide"
-					isPlaying={false}
-					maxTime={200}
-				/>
+				<Roll top left>
+					<div id="user-map"></div>
+
+					<Card className="main-content__filter" width={250} height={250}>
+						<Filter options={filterOptions} />
+					</Card>
+				</Roll>
+				<Fade right>
+					<Recomendation
+						className="main-content__recomendation"
+						rate={rate}
+						changeRate={v => setRate(v)}
+					/>
+				</Fade>
+				<Fade left>
+					<div className="user-controls">
+						<TextField
+							value={time}
+							onChange={e => changeTime(e.target.value)}
+							placeholder="hh.mm"
+							className="time"
+							id='time'
+						/>
+						<TextField
+							type="number"
+							value={range}
+							onChange={e => setRange(e.target.value)}
+							placeholder="KM"
+							className="range"
+							id='range'
+						/>
+					</div>
+					<Button className="main-button" variant="primary">
+						НАЙТИ
+					</Button>
+				</Fade>
 			</div>
 			<Footer />
 		</div>
