@@ -1,14 +1,11 @@
 from django.db import models
 
 
+# python3 manage.py makemigrations && python3 manage.py migrate
 # Create your models here.
 
 class Spot(models.Model):
-    name = models.CharField(max_length=64)
-    latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True)
+    href = models.CharField(max_length=264)
 
 
 class Journey(models.Model):

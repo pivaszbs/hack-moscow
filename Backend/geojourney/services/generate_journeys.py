@@ -1,7 +1,7 @@
 import requests
 from django.conf import settings
 
-import Backend.geojourney.services.triangulation as tri
+import geojourney.services.triangulation as tri
 
 MAX_PLACES = 20
 MAX_DISTANCE = 20.0
@@ -73,7 +73,7 @@ class JourneyGenerator:
     def __init__(self, points):
         coordinates = [[point.x, point.y] for point in points]
         if self.triangulation is None:
-            vertices, edges, faces, enclosing_points = tri.compute_triangulation(coordinates)
+            vertices, edges, faces, enclosing_points = tri.compute_triangulation(points)
             self.triangulation = {'vertices': vertices,
                                   'edges': edges,
                                   'faces': faces,
@@ -86,15 +86,15 @@ class JourneyGenerator:
                                         '?app_id={}&app_code={}'
                                         '&waypoint0=geo!{},{}'
                                         '&waypoint1=geo!{},{}'
-                                        '&mode=fastest;car;traffic:disabled'
+                                        '&mode=fastest;pedestrian;traffic:disabled'
                                         .format(settings.APP_ID, settings.APP_CODE,
                                                 edge.origin.x, edge.origin.y,
-                                                edge.next.x, edge.next.y))
+                                                edge.next.origin.x, edge.next.origin.y))
 
                 get_route = response.json()
                 # TODO check api structure. May cause errors
-                edge.distance = get_route.route.summory.distance / 1000  # route[0]
-                edge.duration = get_route.route.summory.base_time / 60
+                edge.distance = get_route['route']['summary']['distance'] / 1000  # route[0]
+                edge.duration = get_route['route']['summary']['base_time'] / 60
 
     def get_bound_triangle(self, point):
         bound_face = self.triangulation['faces'][0]
