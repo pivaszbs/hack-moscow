@@ -2,6 +2,8 @@ import requests
 from rest_framework import serializers
 from django.conf import settings
 
+from geojourney.models import Journey, Spot
+
 from math import sin, cos, sqrt, atan2, radians
 
 from geojourney.services.generate_journeys import JourneyGenerator
@@ -109,5 +111,15 @@ class CreateJourneySerializer(serializers.Serializer):
         return journey
 
 
+class SpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spot
+        fields = '__all__'
+
+
 class JourneySerializer(serializers.ModelSerializer):
-    pass
+    spots = SpotSerializer(many=True)
+
+    class Meta:
+        model = Journey
+        fields = '__all__'
