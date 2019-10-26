@@ -1,0 +1,38 @@
+{
+    "plugins": [
+        "react",
+        "prettier"
+    ],
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    },
+    "parser": "babel-eslint",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "rules": {
+        "no-set-state": "off",
+        "allowTernary": true,
+        "jsx-quotes": [
+            1,
+            "prefer-single"
+        ],
+        "no-console": 0,
+        "curly": 2,
+        "no-case-declarations": 2,
+        "no-magic-numbers": 1,
+        "no-irregular-whitespace": 0,
+        "no-useless-return": 2,
+        "no-unused-vars": 1,
+        "block-spacing": 1,
+        "no-empty": 1,
+        "react/prop-types": 0 // включить, когда будет время для рефакторинга
+    },
+    "settings": {
+        "import/resolver": "webpack"
+    }
+}

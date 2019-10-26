@@ -4,13 +4,13 @@ import MainPage from './main-page';
 import Login from './login';
 
 const Routes = () => {
-    return (
-        <Router>
-            <Switch>
-                <Route path={'/'} component={MainPage} restrictred={false} />
-            </Switch>
-        </Router>
-    );
-}
+	return (
+		<Router>
+			<Switch>
+				<Route path={'/'} component={MainPage} restrictred={false} />
+			</Switch>
+		</Router>
+	);
+};
 
 export default Routes;
