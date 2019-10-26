@@ -39,7 +39,7 @@ const MainPage = () => {
 		<div className="main-page">
 			<Header />
 			<div className="controls">
-				<Select className={'city-pick'} options={options} isMulti />
+				<Select className={'city-pick'} options={options} />
 				<Card className="user-card" width={300} height={150}>
 					<div className="user-card__name">
 						<Typo variant="h1">Name</Typo>
@@ -54,8 +54,7 @@ const MainPage = () => {
 			</div>
 			<div className="main-content">
 				<div className="main-content__map">Карта</div>
-				<Card className="main-content__category">CAT</Card>
-				<Card className="main-content__filter" width={150} height={150}>
+				<Card className="main-content__filter" width={250} height={250}>
 					<Filter options={filterOptions} />
 				</Card>
 				<Recomendation
