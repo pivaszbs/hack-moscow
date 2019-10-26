@@ -35,7 +35,7 @@ def dfs_path(point, duration_lim, current_duration, distance_lim, current_distan
         yield path
 
     succeeding = point.edge.next
-    if succeeding not in set(path):
+    if succeeding not in set(path) and point.edge.duration:
         fit_duration = duration_lim < current_duration + point.edge.duration
         fit_distance = distance_lim < current_distance + point.edge.distance
         if fit_duration and fit_distance:
@@ -47,13 +47,13 @@ def dfs_path(point, duration_lim, current_duration, distance_lim, current_distan
             yield path
 
     previous = point.edge.previous
-    if previous not in set(path):
-        fit_duration = duration_lim < current_duration + previous.edge.duration
-        fit_distance = distance_lim < current_distance + previous.edge.distance
+    if previous not in set(path) and previous.origin.edge.duration:
+        fit_duration = duration_lim < current_duration + previous.origin.edge.duration
+        fit_distance = distance_lim < current_distance + previous.origin.edge.distance
         if fit_duration and fit_distance:
             yield from dfs_path(previous,
-                                duration_lim, current_duration + previous.edge.duration,
-                                distance_lim, current_distance + previous.edge.distance,
+                                duration_lim, current_duration + previous.origin.edge.duration,
+                                distance_lim, current_distance + previous.origin.edge.distance,
                                 goal, path + [previous])
         elif goal is None:
             yield path
@@ -61,7 +61,7 @@ def dfs_path(point, duration_lim, current_duration, distance_lim, current_distan
 
 def find_best_journey(start, duration_limit, distance_limit, end=None):
     all_paths = list(dfs_path(start, duration_limit, 0, distance_limit, 0, end))
-    if all_paths is None:
+    if all_paths is None or len(all_paths) == 0:
         return []
 
     return all_paths.sort(key=total_weight, reverse=True)[0]
@@ -121,14 +121,17 @@ class JourneyGenerator:
 
         if distance is None:
             distance = MAX_DISTANCE
-
+        print("start traingle")
         start_triangle = self.get_bound_triangle(start_point)
         if is_cycle:
+            print("is_cycle")
             return max([find_best_journey(start, duration, distance, end)
                         for start in start_triangle for end in start_triangle], key=total_weight)
         elif end_point is not None:
+            print("end_point")
             end_triangle = self.get_bound_triangle(end_point)
             return max([find_best_journey(start, duration, distance, end)
                         for start in start_triangle for end in end_triangle], key=total_weight)
         else:
+            print("else")
             return max([find_best_journey(start, duration, distance) for start in start_triangle], key=total_weight)

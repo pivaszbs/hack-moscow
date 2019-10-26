@@ -2,6 +2,8 @@ import requests
 from rest_framework import serializers
 from django.conf import settings
 
+from geojourney.models import Journey, Spot
+
 from math import sin, cos, sqrt, atan2, radians
 
 from geojourney.services.generate_journeys import JourneyGenerator
@@ -70,7 +72,7 @@ class CreateJourneySerializer(serializers.Serializer):
         # points to give to Ilya
         points = []
 
-        # getting all objects (overcoming pagination)
+        # getting all objects (overcoming pagination) # TODO: попробовать с лимитом 100 (дефолт похоже 2)
         url = f'https://places.cit.api.here.com/places/v1/discover/explore?app_id={settings.APP_ID}&app_code={settings.APP_CODE}&in={start_point[0]},{start_point[1]};r={distance}&pretty'
         response = requests.get(url).json()
         while response.get('results', False):
@@ -100,14 +102,24 @@ class CreateJourneySerializer(serializers.Serializer):
             href = i['href']
             points.append([x, y, href])
 
-        points = [Point(i[0], i[1], href=i[2]) for i in points]
+        points = [Point(i[0], i[1], href=i[2]) for i in points] ## remoff
         generator = JourneyGenerator(points)
         is_cycle = True if start_point[0] == end_point[0] and start_point[1] == end_point[1] else False
-        journey = generator.get_journey(start_point, end_point, duration=validated_data.get('duration', None),
+        journey = generator.get_journey(Point(start_point[0], start_point[1]), Point(end_point[0], end_point[1]), duration=validated_data.get('duration', None),
                                         distance=validated_data.get('distance'), is_cycle=is_cycle)
 
         return journey
 
 
+class SpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spot
+        fields = '__all__'
+
+
 class JourneySerializer(serializers.ModelSerializer):
-    pass
+    spots = SpotSerializer(many=True)
+
+    class Meta:
+        model = Journey
+        fields = '__all__'

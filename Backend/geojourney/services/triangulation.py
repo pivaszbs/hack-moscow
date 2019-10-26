@@ -122,7 +122,6 @@ def get_points(face):
 
 def find_triangle(face, point):
     triangle_list = []
-
     if not point.is_inside_triangle(get_points(face)):
         return triangle_list
 
@@ -341,4 +340,14 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
                                     triangle_queue.append(len(faces) - 1)
                                     triangle_queue.append(len(faces) - 2)
                                 break
+
+    def is_connect_with_enclosing(edge):
+        for enclosing_point in enclosing_points:
+            if is_equal(enclosing_point, edge.origin) or \
+                    is_equal(enclosing_point, edge.next.origin) or \
+                    is_equal(enclosing_point, edge.previous.origin):
+                return True
+        return False
+
+    edges = filter(lambda edge: not is_connect_with_enclosing(edge), edges)
     return vertices, edges, faces, enclosing_points

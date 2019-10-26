@@ -5,12 +5,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from django.conf import settings
-
+from geojourney.models import Journey
 from geojourney.serializers.journey import CreateJourneySerializer, JourneySerializer
 
 
 class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = JourneySerializer  # WIP
+
+    queryset = Journey.objects.all()
 
     # permission_classes = (IsAuthenticated,)
 
@@ -43,7 +45,6 @@ class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Gener
         serializer = CreateJourneySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
-        data = serializer.data
         # надо выводить готовый вариант путешествия
 
         return Response(result)
