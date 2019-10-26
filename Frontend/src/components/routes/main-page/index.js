@@ -38,7 +38,7 @@ const MainPage = () => {
 		time = time.replace(/[\D]/, '');
 
 		if (time.length > 2) {
-			time = time.slice(0, 2) + '.' + time.slice(2);
+			time = time.slice(0, 2) + ':' + time.slice(2);
 		}
 
 		time = time.slice(0, 5);
@@ -82,6 +82,7 @@ const MainPage = () => {
 							onChange={e => changeTime(e.target.value)}
 							placeholder="hh.mm"
 							className="time"
+							id='time'
 						/>
 						<TextField
 							type="number"
@@ -89,6 +90,7 @@ const MainPage = () => {
 							onChange={e => setRange(e.target.value)}
 							placeholder="KM"
 							className="range"
+							id='range'
 						/>
 					</div>
 					<Button className="main-button" variant="primary">
