@@ -34,13 +34,16 @@ class CreateJourneySerializer(serializers.Serializer):
     # userId, city, startPoint, endPoint, duration (mins), distance, filters
 
     city = serializers.CharField()
-    start_point_latitude = serializers.FloatField()
-    start_point_longitude = serializers.FloatField()
-    end_point_latitude = serializers.FloatField()
-    end_point_longitude = serializers.FloatField()
+    start_point_latitude = serializers.FloatField(required=False)
+    start_point_longitude = serializers.FloatField(required=False)
+    end_point_latitude = serializers.FloatField(required=False)
+    end_point_longitude = serializers.FloatField(required=False)
     duration = serializers.IntegerField()  # in minutes
     distance = serializers.FloatField()  # in km (maybe IntegerField)  # либо duration либо distance, либо оба TODO: валидация
     filters = serializers.ListField()  # categories
+
+    def validate(self, attrs):
+        return attrs
 
     def create(self, validated_data):
         # city_bounds = requests.get(f'https://geocoder.api.here.com/6.2/geocode.json'
@@ -57,8 +60,8 @@ class CreateJourneySerializer(serializers.Serializer):
             distance = validated_data[
                            'duration'] / 60 * 8  # duration в минутах, делим чтобы получить часы, умножаем на 8 км/ч
 
-        start_point = [validated_data['start_point_latitude'], validated_data['start_point_longitude']]
-        end_point = [validated_data['end_point_latitude'], validated_data['end_point_longitude']]
+        start_point = [validated_data['start_point_latitude'] if validated_data.get('start_point_latitude') else 55.753781489660035, validated_data['start_point_longitude'] if validated_data.get('start_point_longitude') else 37.63358116149902]
+        end_point = [validated_data['end_point_latitude'] if validated_data.get('end_point_latitude') else 55.753395077731085, validated_data['end_point_longitude'] if validated_data.get('end_point_longitude') else 37.63358116149902]
 
         # start_end_distance = get_distance_between_coordinates(start_point[0],
         #                                                       start_point[1],
@@ -129,7 +132,7 @@ class CreateJourneySerializer(serializers.Serializer):
                                         distance=validated_data.get('distance', None), is_cycle=is_cycle)
 
         # serializing
-        journey = [{'latitude': i.x, 'longitude': i.y, 'href': i.href} for i in journey]
+        journey = [{'latitude': i.x if i.x else 37.63358116149902, 'longitude': i.y if i.y else 37.621307373046875, 'href': i.href} for i in journey]
         out = {'journey': journey,
                'waypoints': {}}
         for i in range(len(journey)):
