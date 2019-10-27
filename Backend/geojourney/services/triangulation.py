@@ -349,5 +349,5 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
                 return True
         return False
 
-    edges = filter(lambda edge: not is_connect_with_enclosing(edge), edges)
+    edges = list(filter(lambda edge: not is_connect_with_enclosing(edge), edges))
     return vertices, edges, faces, enclosing_points
