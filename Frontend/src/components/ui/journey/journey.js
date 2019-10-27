@@ -9,8 +9,8 @@ const Journey = props => {
     const {places} = props;
 
     return <div className='journey'>
-        {places.map(place => <>
-            <PlaceCard {...place}/>
+        {places.map((place, ind) => <>
+            <PlaceCard {...place} ind={ind}/>
             <PlacePointer/>
         </>)}
         <FeedBack/>
@@ -18,7 +18,7 @@ const Journey = props => {
 };
 
 const PlaceCard = props => {
-    const {longitude, latitude} = props;
+    const {longitude, latitude, ind} = props;
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState('');
     const [categories, setCategories] = useState([]);
@@ -41,7 +41,7 @@ const PlaceCard = props => {
         <div className='card-header'>{title}</div>
         <div className='content'>
             <div className='place-image'>
-                <img src={`https://source.unsplash.com/200x200?${categories[0]}`}
+                <img src={`https://source.unsplash.com/200x200?${categories[0]}${ind}`}
                      alt='Place image'/>
             </div>
             <Categories categories={categories}/>
