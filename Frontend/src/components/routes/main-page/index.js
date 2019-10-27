@@ -24,11 +24,8 @@ import {
 } from '../../../store/actions';
 import GeolocationService from '../../../services/geoloc-service';
 import store from '../../../store';
-<<<<<<< HEAD
 import { mp, pltfr } from '../../../map';
 import { calculateRoute } from '../../../map';
-=======
->>>>>>> 9034eafaede5da5f3c1e4ffb2317a3405a0fa962
 
 const options = [
 	{ value: 'Moscow', label: 'Moscow', id: 1 },
@@ -55,7 +52,7 @@ const MainPage = ({
 			.then(data => {
 				const H = window.H;
 				const points = data.waypoints;
-
+				console.log(mp, pltfr);
 				calculateRoute(mp, points, pltfr);
 			});
 	}
