@@ -42,7 +42,9 @@ const MainPage = ({
 	city,
 }) => {
 	const [rate, setRate] = useState(3);
-	const isDisabled = !(time && range && pickedCategories.length > 0 && rate);
+	const isDisabled = !(time && range && pickedCategories.length > 0 && rate && city);
+
+	console.log(time, range, pickedCategories.length > 0, rate, city)
 	useEffect(() => {
 		fetchCategories();
 	}, []);
