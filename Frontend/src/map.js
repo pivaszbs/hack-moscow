@@ -36,7 +36,6 @@ export default () => {
 	// Get the default map types from the Platform object:
 	const defaultLayers = platform.createDefaultLayers();
 	var m = document.querySelector('.user-map');
-	console.log(m);
 	// Instantiate the map:
 	const map = new H.Map(m, defaultLayers.vector.normal.map, {
 		zoom: 10,

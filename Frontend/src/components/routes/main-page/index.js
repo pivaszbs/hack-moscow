@@ -9,6 +9,7 @@ import {
 	Card,
 	TextField,
 	Button,
+	Audioguide, Journey
 } from '../../ui';
 import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
@@ -92,6 +93,7 @@ const MainPage = ({
 						changeRate={v => setRate(v)}
 					/>
 				</Fade>
+				<Audioguide maxTime={250}/>
 				<Fade left>
 					<div className="user-controls">
 						<TextField
@@ -120,6 +122,7 @@ const MainPage = ({
 					</Button>
 				</Fade>
 			</div>
+			<Journey places={[{longitude: 52.4857, latitude: 13.345}, {longitude: 52.3897, latitude: 13.1046}, {longitude: 52.4099, latitude: 12.99}]}/>
 			<Footer />
 		</div>
 	);
