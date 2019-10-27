@@ -10,6 +10,8 @@ import Select from './select';
 import Row from './row';
 import Avatar from './avatar/avatar';
 import Filter from './filter';
+import Audioguide from "./audioguide";
+import Journey from "./journey";
 
 export {
 	Button,
@@ -24,4 +26,6 @@ export {
 	Row,
 	Avatar,
 	Filter,
+	Audioguide,
+	Journey
 };

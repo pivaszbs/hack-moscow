@@ -25,4 +25,4 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
-export default setTimeout(map, 2000);
+setTimeout(map, 2000);

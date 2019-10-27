@@ -9,6 +9,7 @@ import {
 	Card,
 	TextField,
 	Button,
+	Audioguide, Journey
 } from '../../ui';
 import './main-page.sass';
 import Ava from '../../../assets/images/avatar-placeholder.webp';
@@ -42,7 +43,8 @@ const MainPage = ({
 	setPickedCategories,
 	setCity,
 	pickedCategories = [],
-	city
+	city,
+	start
 }) => {
 	const [rate, setRate] = useState(3);
 	const isDisabled = !(time && range && pickedCategories.length > 0 && rate && city);
@@ -52,8 +54,17 @@ const MainPage = ({
 			.then(data => {
 				const H = window.H;
 				const points = data.waypoints;
+				const platform = new H.service.Platform({ apikey: 'gFekNQJXLJs2GqSJs1ukPhW5ua9Yy6LNHfUPMDcjLdo' });
+				const defaultLayers = platform.createDefaultLayers();
+				const map = new H.Map(document.querySelector('.user-map'), defaultLayers.vector.normal.map, {
+					start,
+					zoom: 12,
+				});
+				console.log(map);
+				const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+				const provider = map.getBaseLayer().getProvider();
 
-				calculateRoute(mp, points, pltfr);
+				calculateRoute(map, points, platform);
 			});
 	}
 	return (
@@ -92,10 +103,131 @@ const MainPage = ({
 				<Fade right>
 					<Recomendation
 						className="main-content__recomendation"
-						rate={rate}
-						changeRate={v => setRate(v)}
+						{...{
+							name: 'Bar Alexandrovsky',
+							placeId: '643aabd1-53ee914dcc23073228363ac59065ec06',
+							view:
+								'https://share.here.com/p/s-Yz1yZXN0YXVyYW50O2lkPTY0M2FhYmQxLTUzZWU5MTRkY2MyMzA3MzIyODM2M2FjNTkwNjVlYzA2O2xhdD01NS43NTY2MTtsb249MzcuNjE0MTc7bj1CYXIrQWxleGFuZHJvdnNreTtubGF0PTU1Ljc1NjYxO25sb249MzcuNjE0MTc7cGg9JTJCNzQ5NTI1ODcwMDA7aD00ZDNjNjU',
+							location: {
+								position: [55.75661, 37.614174],
+								address: {
+									text: 'Moskva<br/>125009<br/>Russia',
+									postalCode: '125009',
+									district: 'Tverskoy',
+									city: 'Moskva',
+									county: 'Moskva',
+									state: "Tsentral'niy federal'niy okrug",
+									country: 'Russia',
+									countryCode: 'RUS',
+								},
+								access: [
+									{
+										position: [55.75661, 37.614174],
+										accessType: 'road',
+									},
+								],
+							},
+							contacts: {
+								phone: [
+									{
+										value: '+74952587000',
+										label: 'Phone',
+									},
+								],
+								website: [
+									{
+										value: 'http://www.national.ru/cuisine',
+										label: 'Website',
+									},
+								],
+							},
+							categories: [
+								{
+									id: 'restaurant',
+									title: 'Restaurant',
+									href:
+										'https://places.api.here.com/places/v1/categories/places/restaurant?app_id=8reSLlIyBBc264xxGyn5&app_code=m4c_8rdryhdtInQLX48HZQ',
+									type: 'urn:nlp-types:category',
+									system: 'places',
+									icon:
+										'https://download.vcdn.data.here.com/p/d/places2/icons/categories/03.icon',
+								},
+								{
+									id: 'bar-pub',
+									title: 'Bar/Pub',
+									href:
+										'https://places.api.here.com/places/v1/categories/places/bar-pub?app_id=8reSLlIyBBc264xxGyn5&app_code=m4c_8rdryhdtInQLX48HZQ',
+									type: 'urn:nlp-types:category',
+									system: 'places',
+									icon:
+										'https://download.vcdn.data.here.com/p/d/places2/icons/categories/22.icon',
+								},
+							],
+							tags: [
+								{
+									id: 'asian',
+									title: 'Asian',
+									group: 'cuisine',
+								},
+								{
+									id: 'european',
+									title: 'European',
+									group: 'cuisine',
+								},
+								{
+									id: 'russian',
+									title: 'Russian',
+									group: 'cuisine',
+								},
+							],
+							icon:
+								'https://download.vcdn.data.here.com/p/d/places2/icons/categories/03.icon',
+							media: {
+								images: {
+									available: 0,
+									items: [],
+								},
+								reviews: {
+									available: 0,
+									items: [],
+								},
+								ratings: {
+									available: 3,
+									items: [3, 4, 5],
+								},
+							},
+							extended: {
+								openingHours: {
+									text: 'Mon-Sun: 00:00 - 23:59',
+									label: 'Opening hours',
+									isOpen: true,
+									structured: [
+										{
+											start: 'T000000',
+											duration: 'PT23H59M',
+											recurrence: 'FREQ:DAILY;BYDAY:MO,TU,WE,TH,FR,SA,SU',
+										},
+									],
+								},
+							},
+							related: {
+								recommended: {
+									title: 'Nearby',
+									href:
+										'https://places.api.here.com/places/v1/places/643aabd1-53ee914dcc23073228363ac59065ec06/related/recommended;context=Zmxvdy1pZD0zNWI1ZjU5NC02ZjliLTVjM2MtYTc4Yi1iNmM1MGMzNzk2NDFfMTU3MjEwMzk4NDI0OV8wXzQ4ODE?app_id=8reSLlIyBBc264xxGyn5&app_code=m4c_8rdryhdtInQLX48HZQ',
+									type: 'urn:nlp-types:search-results',
+								},
+								'public-transport': {
+									title: 'Public transport nearby',
+									href:
+										'https://places.api.here.com/places/v1/places/643aabd1-53ee914dcc23073228363ac59065ec06/related/public-transport;context=Zmxvdy1pZD0zNWI1ZjU5NC02ZjliLTVjM2MtYTc4Yi1iNmM1MGMzNzk2NDFfMTU3MjEwMzk4NDI0OV8wXzQ4ODE?app_id=8reSLlIyBBc264xxGyn5&app_code=m4c_8rdryhdtInQLX48HZQ',
+									type: 'urn:nlp-types:search-results',
+								},
+							},
+						}}
 					/>
 				</Fade>
+				<Audioguide maxTime={250}/>
 				<Fade left>
 					<div className="user-controls">
 						<TextField
@@ -124,17 +256,23 @@ const MainPage = ({
 					</Button>
 				</Fade>
 			</div>
+			<Journey places={[{longitude: 52.4857, latitude: 13.345},
+				{longitude: 52.3897, latitude: 13.1046},
+				{longitude: 52.4099, latitude: 12.99},
+				{longitude: 52.5085, latitude: 13.3769},
+			]}/>
 			<Footer />
 		</div>
 	);
 };
 
-const msttp = ({ time, range, city, pickedCategories, categories }) => ({
+const msttp = ({ time, range, city, pickedCategories, categories, start }) => ({
 	time,
 	city,
 	range,
 	pickedCategories,
-	categories
+	categories,
+	start
 });
 const mdtp = (dispatch) => ({
 	setTime: time => dispatch(updateTime(time)),
