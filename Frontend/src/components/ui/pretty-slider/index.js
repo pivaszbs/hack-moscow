@@ -1,3 +1,3 @@
-import {PrettoSlider} from "./prettySlider";
+import { PrettoSlider } from './prettySlider';
 
-export default PrettoSlider
+export default PrettoSlider;

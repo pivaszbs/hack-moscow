@@ -54,6 +54,7 @@
         grid-row: 2 / 5
         border-radius: 10px
         opacity: 0
+        transition-duration: 1.5s
 
     .earth
         opacity: 1
@@ -120,6 +121,13 @@
         width: 300px
         font-size: 32px
         font-weight: 300
+        transition: 0.3s ease-in
+        &:disabled
+            background: $main
+        &:not(:disabled):active
+            transform: scale(0.95)
+
+
 
 @keyframes rtt
     0%
