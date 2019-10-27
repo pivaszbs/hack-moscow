@@ -68,7 +68,9 @@ class CreateJourneySerializer(serializers.Serializer):
         #     distance = int(start_end_distance)
 
         filters = str(validated_data["filters"]).replace("\'", "").replace("[", "").replace("]", "")
-
+        filters = ""
+        for i in filters:
+            filters += i['id'] + ','
         # нужно юзать апишку чтобы достать все точки в городе, соответствующие фильтрам (предпочтениям)
 
         # points to give to Ilya
