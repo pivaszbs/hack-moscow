@@ -13,8 +13,8 @@ const Filter = ({ options, select, onCategoriesChange, value }) => {
 				className={'filter-select'}
 				isMulti
 			/>
-			{options.map(({ onChange, label }) => {
-				return <Toggle onChange={onChange}>{label}</Toggle>;
+			{options.map(({ onChange, label, id }) => {
+				return <Toggle key={id} onChange={onChange}>{label}</Toggle>;
 			})}
 		</div>
 	);

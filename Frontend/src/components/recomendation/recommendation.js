@@ -144,13 +144,13 @@ const Recommendation = props => {
 			<Card>
 				<div className="title">{name}</div>
 				<Categories
-					categories={categories.map(category => ({ title: category.title }))}
+					categories={categories}
 				/>
 				{rating ? (
 					<Rating value={rating} max={5} onChange={rate => setRate(rate)} />
 				) : (
-					<div className="rating-stub">Rating not available</div>
-				)}
+						<div className="rating-stub">Rating not available</div>
+					)}
 				<button
 					type="button"
 					className="recommendation__link"
@@ -171,11 +171,11 @@ const Recommendation = props => {
 const Categories = ({ categories }) => {
 	return (
 		<div className="categories">
-			{categories.map(({ icon, title }) => (
-				<div className="recommendation__category">
+			{categories.map(({ icon, title, id }) => (
+				<div key={id} className="recommendation__category">
 					{icon && (
 						<div className="icon">
-							<img src={icon} alt={'Category icon'} />
+							<img src={icon} alt={id} />
 						</div>
 					)}
 					{title}
@@ -219,13 +219,13 @@ const Contacts = ({ contacts }) => {
 	);
 };
 
-const Media = ({ images, reviews, ratings }) => {
+const Media = ({ images, reviews }) => {
 	return (
 		<div className="media">
 			<div className="media_images">
 				{images.items.map(image => (
 					<>
-						<img src={image} alt="Recommendation image" />
+						<img src={image} alt="Recommendation" />
 					</>
 				))}
 			</div>
@@ -257,8 +257,8 @@ const FullRecommendation = props => {
 	const rating = avg_rating ? (
 		<Rating value={avg_rating} max={5} disabled />
 	) : (
-		<Rating value={3} max={5} disabled />
-	);
+			<Rating value={3} max={5} disabled />
+		);
 	// const rating = avg_rating ? (
 	//     <Rating value={avg_rating} max={5}/>
 	// ) : <div className='rating-stub'>Rating not available</div>
