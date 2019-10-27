@@ -60,12 +60,14 @@ class CreateJourneySerializer(serializers.Serializer):
         start_point = [validated_data['start_point_latitude'], validated_data['start_point_longitude']]
         end_point = [validated_data['end_point_latitude'], validated_data['end_point_longitude']]
 
-        start_end_distance = get_distance_between_coordinates(start_point[0],
-                                                              start_point[1],
-                                                              end_point[0],
-                                                              end_point[1])
-        if start_end_distance < distance:
-            distance = int(start_end_distance)
+        # start_end_distance = get_distance_between_coordinates(start_point[0],
+        #                                                       start_point[1],
+        #                                                       end_point[0],
+        #                                                       end_point[1])
+        # if start_end_distance < distance:
+        #     distance = int(start_end_distance)
+
+        filters = str(validated_data["filters"]).replace("\'", "").replace("[", "").replace("]", "")
 
         # нужно юзать апишку чтобы достать все точки в городе, соответствующие фильтрам (предпочтениям)
 
@@ -76,34 +78,45 @@ class CreateJourneySerializer(serializers.Serializer):
         url = f'https://places.cit.api.here.com/places/v1/discover/explore' \
             f'?app_id={settings.APP_ID}' \
             f'&app_code={settings.APP_CODE}' \
-            f'&in={start_point[0]},{start_point[1]};r={distance}&pretty'
+            f'&in={start_point[0]},{start_point[1]};r={distance}' \
+            f'&cat={filters}' \
+            f'&size=100' \
+            f'&pretty'
         response = requests.get(url).json()
-        while response.get('results', False):
-            for i in response['results']['items']:
-                x = i['position'][0]
-                y = i['position'][1]
-                href = i['href']
-                points.append([x, y, href])
 
-            url = response['results']['next']
-            response = requests.get(url).json()
-
-        # pizdec ih paginaciya ya ebal
-        while response.get('next', False):
-            for i in response['items']:
-                x = i['position'][0]
-                y = i['position'][1]
-                href = i['href']
-                points.append([x, y, href])
-            url = response.get('next')
-            response = requests.get(url).json()
-
-        # i eshe odin raz nahoooy
-        for i in response['items']:
+        for i in response['results']['items']:
             x = i['position'][0]
             y = i['position'][1]
             href = i['href']
             points.append([x, y, href])
+        print(response['results'].get('next', False))
+
+        # while response.get('results', False):
+        #     for i in response['results']['items']:
+        #         x = i['position'][0]
+        #         y = i['position'][1]
+        #         href = i['href']
+        #         points.append([x, y, href])
+        #
+        #     url = response['results']['next']
+        #     response = requests.get(url).json()
+        #
+        # # pizdec ih paginaciya ya ebal
+        # while response.get('next', False):
+        #     for i in response['items']:
+        #         x = i['position'][0]
+        #         y = i['position'][1]
+        #         href = i['href']
+        #         points.append([x, y, href])
+        #     url = response.get('next')
+        #     response = requests.get(url).json()
+        #
+        # # i eshe odin raz nahoooy
+        # for i in response['items']:
+        #     x = i['position'][0]
+        #     y = i['position'][1]
+        #     href = i['href']
+        #     points.append([x, y, href])
 
         points = [Point(i[0], i[1], href=i[2], weight=1) for i in points[:10]]
         print(f"Found {len(points)} points")
