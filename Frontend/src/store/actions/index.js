@@ -34,29 +34,38 @@ export const updateRange = range => ({
 });
 
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
-export const categoriesLoaded = (categories) => {
+export const categoriesLoaded = categories => {
 	categories = categories.map(({ id, title, icon }) => ({
 		id,
 		value: title,
 		label: title,
-		icon
+		icon,
 	}));
 
 	return {
 		type: 'FETCH_CATEGORIES_SUCCESS',
-		categories
+		categories,
 	};
 };
 
 export const SEND_DATA = 'SEND_DATA';
 export const sendData = () => ({
 	type: SEND_DATA,
-	method: geoloc.sendRouteInfo
-})
+	method: geoloc.sendRouteInfo,
+});
 
-export const fetchCategories = (dispatch) => () => {
-	geoloc.getCategories()
-		.then((data) => dispatch(categoriesLoaded(data.items)))
+export const fetchCategories = dispatch => () => {
+	geoloc.getCategories().then(data => dispatch(categoriesLoaded(data.items)));
 };
 
+export const UPDATE_CITY = 'UPDATE_CITY';
+export const updateCity = city => ({
+	type: UPDATE_CITY,
+	city,
+});
 
+export const UPDATE_PICKED_CATEGORIES = 'UPDATE_PICKED_CATEGORIES';
+export const updatePickedCategories = categories => ({
+	type: UPDATE_PICKED_CATEGORIES,
+	categories,
+});

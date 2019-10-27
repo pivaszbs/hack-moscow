@@ -1,3 +1,3 @@
 import Audioguide from './audioguide';
 
-export default Audioguide
+export default Audioguide;
