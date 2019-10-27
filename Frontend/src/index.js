@@ -25,4 +25,4 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
-export default Promise.resolve(setTimeout(map, 2000));
+export default setTimeout(map, 2000);

@@ -1,6 +1,7 @@
 import store from '../src/store';
 import { updateStart, updateEnd } from '../src/store/actions';
 import { bindActionCreators } from 'redux';
+import map from '../src';
 
 const { updateStart: setStart, updateEnd: setEnd } = bindActionCreators(
 	{ updateStart, updateEnd },
