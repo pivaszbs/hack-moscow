@@ -1,5 +1,6 @@
 import requests
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -51,7 +52,10 @@ class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Gener
 
     @action(detail=False, methods=["GET"])
     def categories(self, request):
-        city = request.query_params['city']
+        try:
+            city = request.query_params['city']
+        except KeyError:
+            return ValidationError("Необходим параметр: city")
         city_bounds = requests.get(f'https://geocoder.api.here.com/6.2/geocode.json'
                                    f'?app_id={settings.APP_ID}'
                                    f'&app_code={settings.APP_CODE}'
