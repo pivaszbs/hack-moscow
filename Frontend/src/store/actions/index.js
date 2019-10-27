@@ -48,20 +48,15 @@ export const categoriesLoaded = categories => {
 	};
 };
 
-export const SEND_DATA = 'SEND_DATA';
-export const sendData = () => ({
-	type: SEND_DATA,
-	method: geoloc.sendRouteInfo,
-});
-
-export const fetchCategories = dispatch => () => {
-	geoloc.getCategories().then(data => dispatch(categoriesLoaded(data.items)));
+export const fetchCategories = (dispatch, city) => {
+	geoloc.loadCategories(city).then(data => dispatch(categoriesLoaded(data.items)));
 };
 
 export const UPDATE_CITY = 'UPDATE_CITY';
-export const updateCity = city => ({
+export const updateCity = (dispatch, city) => ({
 	type: UPDATE_CITY,
 	city,
+	dispatch
 });
 
 export const UPDATE_PICKED_CATEGORIES = 'UPDATE_PICKED_CATEGORIES';
