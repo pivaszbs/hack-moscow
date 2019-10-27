@@ -42,7 +42,8 @@ const MainPage = ({
 	setPickedCategories,
 	setCity,
 	pickedCategories = [],
-	city
+	city,
+	start
 }) => {
 	const [rate, setRate] = useState(3);
 	const isDisabled = !(time && range && pickedCategories.length > 0 && rate && city);
@@ -52,8 +53,17 @@ const MainPage = ({
 			.then(data => {
 				const H = window.H;
 				const points = data.waypoints;
-				console.log(mp, pltfr);
-				calculateRoute(mp, points, pltfr);
+				const platform = new H.service.Platform({ apikey: 'gFekNQJXLJs2GqSJs1ukPhW5ua9Yy6LNHfUPMDcjLdo' });
+				const defaultLayers = platform.createDefaultLayers();
+				const map = new H.Map(document.querySelector('.user-map'), defaultLayers.vector.normal.map, {
+					start,
+					zoom: 12,
+				});
+				console.log(map);
+				const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+				const provider = map.getBaseLayer().getProvider();
+
+				calculateRoute(map, points, platform);
 			});
 	}
 	return (
@@ -129,12 +139,13 @@ const MainPage = ({
 	);
 };
 
-const msttp = ({ time, range, city, pickedCategories, categories }) => ({
+const msttp = ({ time, range, city, pickedCategories, categories, start }) => ({
 	time,
 	city,
 	range,
 	pickedCategories,
-	categories
+	categories,
+	start
 });
 const mdtp = (dispatch) => ({
 	setTime: time => dispatch(updateTime(time)),
