@@ -105,7 +105,7 @@ class CreateJourneySerializer(serializers.Serializer):
             href = i['href']
             points.append([x, y, href])
 
-        points = [Point(i[0], i[1], href=i[2], weight=1) for i in points]
+        points = [Point(i[0], i[1], href=i[2], weight=1) for i in points[:10]]
         print(f"Found {len(points)} points")
         generator = JourneyGenerator(points)
         is_cycle = True if start_point[0] == end_point[0] and start_point[1] == end_point[1] else False
@@ -115,8 +115,12 @@ class CreateJourneySerializer(serializers.Serializer):
 
         # serializing
         journey = [{'latitude': i.x, 'longitude': i.y, 'href': i.href} for i in journey]
+        out = {'journey': journey,
+               'waypoints': {}}
+        for i in range(len(journey)):
+            out['waypoints'][f'waypoint{i}'] = f"{journey[i]['latitude']}, {journey[i]['longitude']}"
 
-        return journey
+        return out
 
 
 class SpotSerializer(serializers.ModelSerializer):
