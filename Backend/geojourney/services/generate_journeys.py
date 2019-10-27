@@ -58,9 +58,9 @@ def dfs_path(point, duration_lim, current_duration, distance_lim, current_distan
     if point is not None and point.edge is not None and point.edge.previous is not None:
         previous = point.edge.previous
         if previous.origin not in set(path):
-            if previous.origin.edge.duration is None:
+            if previous.origin.edge and previous.origin.edge.duration is None:
                 previous.origin.edge.duration = 0
-            if previous.origin.edge.distance is None:
+            if previous.origin.edge and previous.origin.edge.distance is None:
                 previous.origin.edge.distance = 0
             fit_duration = duration_lim >= current_duration + previous.origin.edge.duration
             fit_distance = distance_lim >= current_distance + previous.origin.edge.distance
@@ -130,7 +130,8 @@ class JourneyGenerator:
                                     '&mode=fastest;pedestrian;traffic:disabled'
                                     '&summaryAttributes=costfactor,distance'
                                     .format(settings.APP_ID, settings.APP_CODE, query))
-            resp = response.json()['response']['matrixEntry']
+            resp = response.json()
+            resp = resp['response']['matrixEntry']
             resp_mapped = map(lambda elem: {'distance': elem['summary']['distance'],
                                             'costFactor': elem['summary']['costFactor'],
                                             'startIndex': elem['startIndex'] + right,

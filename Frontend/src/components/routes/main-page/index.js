@@ -25,6 +25,8 @@ import {
 } from '../../../store/actions';
 import GeolocationService from '../../../services/geoloc-service';
 import store from '../../../store';
+import { mp, pltfr } from '../../../map';
+import { calculateRoute } from '../../../map';
 
 const options = [
 	{ value: 'Moscow', label: 'Moscow', id: 1 },
@@ -49,9 +51,11 @@ const MainPage = ({
 		let state = store.getState();
 		geoloc.sendRouteInfo(state)
 			.then(data => {
+				const H = window.H;
 				const points = data.waypoints;
-				
-			})
+
+				calculateRoute(mp, points, pltfr);
+			});
 	}
 	return (
 		<div className="main-page">

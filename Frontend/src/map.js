@@ -8,6 +8,8 @@ const { updateStart: setStart, updateEnd: setEnd } = bindActionCreators(
 	store.dispatch
 );
 
+let mp, pltfr;
+
 export default () => {
 	function interleave(map) {
 		var provider = map.getBaseLayer().getProvider();
@@ -88,8 +90,14 @@ export default () => {
 	);
 
 	interleave(map);
-	return { platform, map }
+	mp = map;
+	pltfr = platform
 };
+
+export {
+	mp,
+	pltfr
+}
 
 export function calculateRoute(platform, map, points) {
 	const H = window.H;
