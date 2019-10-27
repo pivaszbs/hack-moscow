@@ -19,36 +19,43 @@ import Roll from 'react-reveal/Roll';
 import {
 	updateTime,
 	updateRange,
-	fetchCategories,
 	updatePickedCategories,
 	updateCity,
 } from '../../../store/actions';
+import GeolocationService from '../../../services/geoloc-service';
+import store from '../../../store';
+import { mp, pltfr } from '../../../map';
+import { calculateRoute } from '../../../map';
 
 const options = [
-	{ value: 'chocolate', label: 'Chocolate', id: 1 },
-	{ value: 'strawberry', label: 'Strawberry', id: 2 },
-	{ value: 'vanilla', label: 'Vanilla', id: 3 },
+	{ value: 'Moscow', label: 'Moscow', id: 1 },
 ];
+
+const geoloc = new GeolocationService();
 
 const MainPage = ({
 	time,
 	range,
 	setTime,
 	setRange,
-	categories = options,
+	categories,
 	setPickedCategories,
 	setCity,
 	pickedCategories = [],
-	city,
+	city
 }) => {
 	const [rate, setRate] = useState(3);
 	const isDisabled = !(time && range && pickedCategories.length > 0 && rate && city);
+	const sendData = () => {
+		let state = store.getState();
+		geoloc.sendRouteInfo(state)
+			.then(data => {
+				const H = window.H;
+				const points = data.waypoints;
 
-	console.log(time, range, pickedCategories.length > 0, rate, city)
-	useEffect(() => {
-		fetchCategories();
-	}, []);
-
+				calculateRoute(mp, points, pltfr);
+			});
+	}
 	return (
 		<div className="main-page">
 			<Header />
@@ -111,6 +118,7 @@ const MainPage = ({
 						className="main-button"
 						disabled={isDisabled}
 						variant="primary"
+						onClick={sendData}
 					>
 						НАЙТИ
 					</Button>
@@ -121,18 +129,18 @@ const MainPage = ({
 	);
 };
 
-const msttp = ({ time, range, city, pickedCategories }) => ({
+const msttp = ({ time, range, city, pickedCategories, categories }) => ({
 	time,
 	city,
 	range,
 	pickedCategories,
+	categories
 });
-const mdtp = dispatch => ({
+const mdtp = (dispatch) => ({
 	setTime: time => dispatch(updateTime(time)),
 	setRange: range => dispatch(updateRange(range)),
-	fetchCategories: fetchCategories(dispatch),
 	setPickedCategories: v => dispatch(updatePickedCategories(v)),
-	setCity: v => dispatch(updateCity(v)),
+	setCity: v => dispatch(updateCity(dispatch, v))
 });
 
 export default connect(

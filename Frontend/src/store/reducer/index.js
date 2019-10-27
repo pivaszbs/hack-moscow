@@ -1,3 +1,5 @@
+import { fetchCategories as fc } from '../actions';
+
 const updateStart = (state, { point }) => {
     return {
         ...state,
@@ -40,24 +42,27 @@ const updateTime = (state, { time }) => {
     };
 };
 
-const fetchCategories = (state, { categories }) => ({
-    ...state,
-    categories,
-});
-
-const sendData = (state, { method }) => {
-    method(state);
+const fetchCategories = (state, { categories }) => {
+    return {
+        ...state,
+        categories,
+    }
 };
 
 const updatePickedCategories = (state, { categories }) => ({
     ...state,
-    pickedCategories: [state.pickedCategories, categories],
+    pickedCategories: categories,
 });
 
-const updateCity = (state, { city }) => ({
-    ...state,
-    city
-})
+const updateCity = (state, { city, dispatch }) => {
+    fc(dispatch, city);
+
+    return {
+        ...state,
+        city
+    };
+};
+
 const reducers = {
     UPDATE_END: updateEnd,
     UPDATE_RANGE: updateRange,
@@ -65,11 +70,10 @@ const reducers = {
     UPDATE_START: updateStart,
     UPDATE_TIME: updateTime,
     FETCH_CATEGORIES_SUCCESS: fetchCategories,
-    SEND_DATA: sendData,
     UPDATE_PICKED_CATEGORIES: updatePickedCategories,
     UPDATE_CITY: updateCity
 };
 
-export default (state = { rate: 3, time: '', range: '' }, action) => {
+export default (state = { rate: 3, time: '', range: '', start: { lat: 55.815382, lon: 37.57497 }, end: { lat: 55.815382, lon: 37.57497 } }, action) => {
     return reducers[action.type] ? reducers[action.type](state, action) : state;
 };
