@@ -1,15 +1,15 @@
 const updateStart = (state, { point }) => {
-	return {
-		...state,
-		start: point,
-	};
+    return {
+        ...state,
+        start: point,
+    };
 };
 
 const updateEnd = (state, { point }) => {
-	return {
-		...state,
-		end: point,
-	};
+    return {
+        ...state,
+        end: point,
+    };
 };
 
 // const updateRate = (state, { rate }) => {
@@ -19,55 +19,57 @@ const updateEnd = (state, { point }) => {
 // }
 
 const updateRange = (state, { range }) => {
-	return {
-		...state,
-		range,
-	};
+    return {
+        ...state,
+        range,
+    };
 };
 
 const updateTime = (state, { time }) => {
-	time = time.replace(/[\D]/, '');
+    time = time.replace(/[\D]/, '');
 
-	if (time.length > 2) {
-		time = time.slice(0, 2) + ':' + time.slice(2);
-	}
+    if (time.length > 2) {
+        time = time.slice(0, 2) + ':' + time.slice(2);
+    }
 
-	time = time.slice(0, 5);
+    time = time.slice(0, 5);
 
-	return {
-		...state,
-		time,
-	};
+    return {
+        ...state,
+        time,
+    };
 };
 
 const fetchCategories = (state, { categories }) => ({
-	...state,
-	categories,
+    ...state,
+    categories,
 });
 
 const sendData = (state, { method }) => {
-	method(state);
+    method(state);
 };
 
-const updatePickedCategories = (state, { categories }) => {
-	console.log(state);
-	return {
-		...state,
-		pickedCategories: [state.pickedCategories, categories],
-	};
-};
+const updatePickedCategories = (state, { categories }) => ({
+    ...state,
+    pickedCategories: [state.pickedCategories, categories],
+});
 
+const updateCity = (state, { city }) => ({
+    ...state,
+    city
+})
 const reducers = {
-	UPDATE_END: updateEnd,
-	UPDATE_RANGE: updateRange,
-	// UPDATE_RATE,
-	UPDATE_START: updateStart,
-	UPDATE_TIME: updateTime,
-	FETCH_CATEGORIES_SUCCESS: fetchCategories,
-	SEND_DATA: sendData,
-	UPDATE_PICKED_CATEGORIES: updatePickedCategories,
+    UPDATE_END: updateEnd,
+    UPDATE_RANGE: updateRange,
+    // UPDATE_RATE,
+    UPDATE_START: updateStart,
+    UPDATE_TIME: updateTime,
+    FETCH_CATEGORIES_SUCCESS: fetchCategories,
+    SEND_DATA: sendData,
+    UPDATE_PICKED_CATEGORIES: updatePickedCategories,
+    UPDATE_CITY: updateCity
 };
 
 export default (state = { rate: 3, time: '', range: '' }, action) => {
-	return reducers[action.type] ? reducers[action.type](state, action) : state;
+    return reducers[action.type] ? reducers[action.type](state, action) : state;
 };
