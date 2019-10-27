@@ -73,7 +73,10 @@ class CreateJourneySerializer(serializers.Serializer):
         points = []
 
         # getting all objects (overcoming pagination) # TODO: попробовать с лимитом 100 (дефолт похоже 2)
-        url = f'https://places.cit.api.here.com/places/v1/discover/explore?app_id={settings.APP_ID}&app_code={settings.APP_CODE}&in={start_point[0]},{start_point[1]};r={distance}&pretty'
+        url = f'https://places.cit.api.here.com/places/v1/discover/explore' \
+            f'?app_id={settings.APP_ID}' \
+            f'&app_code={settings.APP_CODE}' \
+            f'&in={start_point[0]},{start_point[1]};r={distance}&pretty'
         response = requests.get(url).json()
         while response.get('results', False):
             for i in response['results']['items']:
@@ -103,14 +106,15 @@ class CreateJourneySerializer(serializers.Serializer):
             points.append([x, y, href])
 
         points = [Point(i[0], i[1], href=i[2], weight=1) for i in points]
+        print(f"Found {len(points)} points")
         generator = JourneyGenerator(points)
         is_cycle = True if start_point[0] == end_point[0] and start_point[1] == end_point[1] else False
-        print(end_point[0], end_point[1])
-        journey = generator.get_journey(Point(start_point[0], start_point[1]), Point(end_point[0], end_point[1]), duration=validated_data.get('duration', None),
+        journey = generator.get_journey(Point(start_point[0], start_point[1]), Point(end_point[0], end_point[1]),
+                                        duration=validated_data.get('duration', None),
                                         distance=validated_data.get('distance', None), is_cycle=is_cycle)
 
         # serializing
-        journey = [[i.x, i.y, i.href] for i in journey]
+        journey = [{'latitude': i.x, 'longitude': i.y, 'href': i.href} for i in journey]
 
         return journey
 

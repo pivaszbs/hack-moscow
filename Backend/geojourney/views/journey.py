@@ -22,25 +22,6 @@ class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Gener
         """
         Основной метод, должен принимать userId, city, startPoint, endPoint, duration, distance, filters и выдавать
         готовый маршрут по сути. Логику лучше описывать в сервисах
-        Примерная выдача:
-        [
-            {
-                duration,
-                distance,
-                places:[
-                        {
-                        placeId,
-                        name,
-                        categories: [],
-                        position,
-                        timeToNextPlace,
-                        distanceToNextPlace
-                        }
-                ]
-            },
-            rating,
-            link
-        ]
         """
         # user = request.user  # скорее всего тут упадет без аутентификации
         serializer = CreateJourneySerializer(data=request.data)
@@ -71,15 +52,14 @@ class JourneyViewSet(ListModelMixin, CreateModelMixin, RetrieveModelMixin, Gener
 
         print("! received categories from remote API")
         categories = categories.json()
-        # remove all upper-level-categories
         popped = categories
-        # popped = []
-        # for i in categories['items']:
-        #     if len(i['within']) != 0:
-        #         popped.append(i)
 
         return Response(popped)
 
     def create(self, request, *args, **kwargs):
-        """По сути просто записывает новое путешествие в базу"""  # TODO: придумать в каком виде, написать сериализатор
+        """По сути просто записывает новое путешествие в базу"""
         return super(JourneyViewSet, self).create(request, *args, **kwargs)
+
+    @action(detail=False, methods=['GET'])
+    def get_corridor_points(self):
+        pass
