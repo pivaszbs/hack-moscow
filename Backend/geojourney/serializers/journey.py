@@ -102,11 +102,14 @@ class CreateJourneySerializer(serializers.Serializer):
             href = i['href']
             points.append([x, y, href])
 
-        points = [Point(i[0], i[1], href=i[2]) for i in points] ## remoff
+        points = [Point(i[0], i[1], href=i[2]) for i in points[:10]] ## remoff
         generator = JourneyGenerator(points)
         is_cycle = True if start_point[0] == end_point[0] and start_point[1] == end_point[1] else False
         journey = generator.get_journey(Point(start_point[0], start_point[1]), Point(end_point[0], end_point[1]), duration=validated_data.get('duration', None),
                                         distance=validated_data.get('distance'), is_cycle=is_cycle)
+
+        # serializing
+        journey = [[i.x, i.y, i.href] for i in journey]
 
         return journey
 
