@@ -35,7 +35,7 @@ def dfs_path(point, duration_lim, current_duration, distance_lim, current_distan
         path = [point]
 
     if goal is not None and point == goal:
-        yield path
+        yield path + [goal]
 
     if point is not None and point.edge is not None and point.edge.next is not None:
         succeeding = point.edge.next
@@ -123,8 +123,8 @@ class JourneyGenerator:
                                       resp)
                     get_routes.extend(resp_mapped)
             query = '&'.join(['start{}={},{}&destination{}={},{}'.format(ind, edg[0].origin.x, edg[0].origin.y,
-                                                                        ind, edg[1].origin.x, edg[1].origin.y) for
-                             ind, edg in enumerate(edges_set[right:len(edges_set)])])
+                                                                         ind, edg[1].origin.x, edg[1].origin.y) for
+                              ind, edg in enumerate(edges_set[right:len(edges_set)])])
             response = requests.get('https://matrix.route.api.here.com/routing/7.2/calculatematrix.json'
                                     '?app_id={}&app_code={}&{}'
                                     '&mode=fastest;pedestrian;traffic:disabled'
@@ -177,14 +177,17 @@ class JourneyGenerator:
         start_points = filter(lambda point: point.x > 0 and point.y > 0, start_triangle)
         if is_cycle:
             print("is_cycle")
-            return max([find_best_journey(start, duration, distance, end)
-                        for start in start_triangle for end in start_points], key=total_weight)
+            return [start_point] + max([find_best_journey(start, duration, distance, end)
+                                        for start in start_triangle for end in start_points], key=total_weight) + [
+                       start_point]
         elif end_point is not None:
             print("end_point")
             end_triangle = tri.get_points(self.get_bound_triangle(end_point)[0])
             end_points = filter(lambda point: point.x > 0 and point.y > 0, end_triangle)
-            return max([find_best_journey(start, duration, distance, end)
-                        for start in start_points for end in end_points], key=total_weight)
+            return [start_point] + max([find_best_journey(start, duration, distance, end)
+                                        for start in start_points for end in end_points], key=total_weight) + [
+                       end_point]
         else:
             print("else")
-            return max([find_best_journey(start, duration, distance) for start in start_points], key=total_weight)
+            return [start_point] + max([find_best_journey(start, duration, distance) for start in start_points],
+                                       key=total_weight)

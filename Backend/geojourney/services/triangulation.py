@@ -19,12 +19,12 @@ class Edge:
 
 
 class Point:
-    def __init__(self, x, y, href=None, edge=None):
+    def __init__(self, x, y, href=None, edge=None, weight=None):
         self.x = x
         self.y = y
         self.href = href
         self.edge = edge
-        self.weight = None
+        self.weight = weight
 
     def add(self, point):
         return Point(self.x + point.x, self.y + point.y)
@@ -53,9 +53,9 @@ class Point:
     def is_inside_circle(self, circle_points):
         circle_points = sort_counter_clockwise(circle_points)
 
-        point1 = Point(circle_points[0].x, circle_points[0].y, circle_points[0].href)
-        point2 = Point(circle_points[1].x, circle_points[1].y, circle_points[1].href)
-        point3 = Point(circle_points[2].x, circle_points[2].y, circle_points[2].href)
+        point1 = Point(circle_points[0].x, circle_points[0].y, circle_points[0].href, circle_points[0].weight)
+        point2 = Point(circle_points[1].x, circle_points[1].y, circle_points[1].href, circle_points[1].weight)
+        point3 = Point(circle_points[2].x, circle_points[2].y, circle_points[2].href, circle_points[2].weight)
 
         matrix = np.array([
             [point1.x - self.x, point2.x - self.x, point3.x - self.x],
@@ -189,7 +189,7 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
     j = -3
 
     for i in range(len(points) - 3, len(points)):
-        vertices[len(vertices) + j] = Point(points[i].x, points[i].y, points[i].href)
+        vertices[len(vertices) + j] = Point(points[i].x, points[i].y, points[i].href, points[i].weight)
         edges[len(edges) + j] = Edge(origin=vertices[j])
         faces[len(faces) - 1] = Face(edge=edges[0], children=[], parent=[])
         vertices[j].edge = edges[j]
@@ -207,7 +207,7 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
         triangle = find_triangle(faces[0], points[i])
         if len(triangle) == 1 or len(triangle) == 2:
             triangle_queue = []
-            vertices.append(Point(points[i].x, points[i].y, points[i].href))
+            vertices.append(Point(points[i].x, points[i].y, points[i].href, points[i].weight))
             vert = vertices[len(vertices) - 1]
             edges_len = len(edges)
 
