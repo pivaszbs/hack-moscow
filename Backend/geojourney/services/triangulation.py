@@ -53,9 +53,9 @@ class Point:
     def is_inside_circle(self, circle_points):
         circle_points = sort_counter_clockwise(circle_points)
 
-        point1 = Point(circle_points[0].x, circle_points[0].y)
-        point2 = Point(circle_points[1].x, circle_points[1].y)
-        point3 = Point(circle_points[2].x, circle_points[2].y)
+        point1 = Point(circle_points[0].x, circle_points[0].y, circle_points[0].href)
+        point2 = Point(circle_points[1].x, circle_points[1].y, circle_points[1].href)
+        point3 = Point(circle_points[2].x, circle_points[2].y, circle_points[2].href)
 
         matrix = np.array([
             [point1.x - self.x, point2.x - self.x, point3.x - self.x],
@@ -189,7 +189,7 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
     j = -3
 
     for i in range(len(points) - 3, len(points)):
-        vertices[len(vertices) + j] = Point(points[i].x, points[i].y)
+        vertices[len(vertices) + j] = Point(points[i].x, points[i].y, points[i].href)
         edges[len(edges) + j] = Edge(origin=vertices[j])
         faces[len(faces) - 1] = Face(edge=edges[0], children=[], parent=[])
         vertices[j].edge = edges[j]
@@ -207,7 +207,7 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
         triangle = find_triangle(faces[0], points[i])
         if len(triangle) == 1 or len(triangle) == 2:
             triangle_queue = []
-            vertices.append(Point(points[i].x, points[i].y))
+            vertices.append(Point(points[i].x, points[i].y, points[i].href))
             vert = vertices[len(vertices) - 1]
             edges_len = len(edges)
 
@@ -349,5 +349,5 @@ def compute_triangulation(points, vertices=None, edges=None, faces=None):
                 return True
         return False
 
-    edges = filter(lambda edge: not is_connect_with_enclosing(edge), edges)
+    edges = list(filter(lambda edge: not is_connect_with_enclosing(edge), edges))
     return vertices, edges, faces, enclosing_points
